@@ -1,0 +1,329 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import {
+  Book,
+  Building2,
+  CalendarDays,
+  CalendarX2,
+  ClipboardCheck,
+  MessageSquare,
+  MonitorPlay,
+  Settings,
+  Shield,
+  TicketPercent,
+  Users,
+  Video,
+  ListChecks,
+  Wallet2,
+  Wrench,
+  CalendarClock,
+  LayoutDashboard,
+  Receipt,
+  UserRound,
+  UserCheck,
+  UserX,
+  ArrowRightLeft,
+  User,
+  Notebook,
+} from "lucide-react";
+
+type NavItem = {
+  label: string;
+  href: string;
+  icon: React.ElementType;
+  children?: NavItem[];
+};
+
+type NavSection = {
+  label: string;
+  items: NavItem[];
+};
+
+const navSections: NavSection[] = [
+  {
+    label: "Gym Management",
+    items: [
+      {
+        label: "Dashboard",
+        href: "/dashboard",
+        icon: LayoutDashboard,
+      },
+      {
+        label: "Trial Bookings",
+        href: "/dashboard/trials",
+        icon: CalendarDays,
+      },
+      {
+        label: "Contacts",
+        href: "/dashboard/contacts",
+        icon: MessageSquare,
+      },
+      {
+        label: "Members",
+        href: "/dashboard/members",
+        icon: Users,
+        children: [
+          {
+            label: "All Members",
+            href: "/dashboard/members",
+            icon: UserRound,
+          },
+          {
+            label: "Active Members",
+            href: "/dashboard/members/active",
+            icon: UserCheck,
+          },
+          {
+            label: "Inactive Members",
+            href: "/dashboard/members/inactive",
+            icon: UserX,
+          },
+          {
+            label: "Frozen Members",
+            href: "/dashboard/members/frozen",
+            icon: ArrowRightLeft,
+          },
+        ],
+      },
+      {
+        label: "Manage Slots",
+        href: "/dashboard/slots",
+        icon: CalendarX2,
+      },
+      {
+        label: "Staff Attendance",
+        href: "/dashboard/attendance",
+        icon: ClipboardCheck,
+      },
+      {
+        label: "Member Attendance",
+        href: "/dashboard/member-attendance",
+        icon: ClipboardCheck,
+      },
+      {
+        label: "Branches",
+        href: "/dashboard/branches",
+        icon: Building2,
+      },
+    ],
+  },
+
+  {
+    label: "Workout Broadcasting",
+    items: [
+      {
+        label: "TV",
+        href: "/dashboard/tv-devices",
+        icon: MonitorPlay,
+      },
+      {
+        label: "Workout Videos",
+        href: "/dashboard/workout-videos",
+        icon: Video,
+      },
+      {
+        label: "Workout Programs",
+        href: "/dashboard/workout-programs",
+        icon: ListChecks,
+      },
+      {
+        label: "Workout Broadcasts",
+        href: "/dashboard/workout-broadcasts",
+        icon: ListChecks,
+      },
+      {
+        label: "Broadcast Schedule",
+        href: "/dashboard/workout-schedules",
+        icon: CalendarClock,
+      },
+    ],
+  },
+
+  {
+    label: "Administration",
+    items: [
+      {
+        label: "Memberships",
+        href: "/dashboard/memberships",
+        icon: User,
+        children: [
+          {
+            label: "All Memberships",
+            href: "/dashboard/memberships",
+            icon: User,
+          },
+          {
+            label: "Transferred Memberships",
+            href: "/dashboard/memberships/transferred",
+            icon: ArrowRightLeft,
+          },
+        ],
+      },
+      {
+        label: "Payroll",
+        href: "/dashboard/payroll",
+        icon: Wallet2,
+      },
+      {
+        label: "Expense",
+        href: "/dashboard/expanse",
+        icon: Receipt,
+      },
+      {
+        label: "Collection",
+        href: "/dashboard/collection",
+        icon: Receipt,
+      },
+      {
+        label: "Invoices",
+        href: "/dashboard/invoices",
+        icon: Notebook,
+      },
+      {
+        label: "Staffs",
+        href: "/dashboard/users",
+        icon: Shield,
+      },
+      {
+        label: "Blogs",
+        href: "/dashboard/blogs",
+        icon: Book,
+      },
+      {
+        label: "Services",
+        href: "/dashboard/services",
+        icon: Wrench,
+      },
+      {
+        label: "Coupons",
+        href: "/dashboard/coupons",
+        icon: TicketPercent,
+      },
+      {
+        label: "Settings",
+        href: "/dashboard/settings",
+        icon: Settings,
+      },
+    ],
+  },
+];
+
+export default function Sidebar() {
+  const pathname = usePathname();
+
+  return (
+    <aside className="flex w-64 flex-col overflow-y-auto border-r border-neutral-800 bg-neutral-950 p-5">
+      <div className="mb-8">
+        <img src="/logo.jpg" alt="Fuel Gym" className="w-20" />
+      </div>
+
+      <nav className="space-y-7">
+        {navSections.map((section) => (
+          <div key={section.label}>
+            <p className="mb-2 px-4 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">
+              {section.label}
+            </p>
+
+            <div className="space-y-2">
+              {section.items.map((item) => {
+                const hasChildren = !!item.children?.length;
+
+                const isActive =
+                  pathname === item.href ||
+                  (hasChildren && pathname.startsWith(`${item.href}/`));
+
+                const Icon = item.icon;
+
+                return (
+                  <div key={item.href}>
+                    {/* Parent item */}
+                    <Link
+                      href={item.href}
+                      className={`
+                        group relative flex items-center gap-3 overflow-hidden
+                        rounded-xl px-4 py-3 text-sm font-medium
+                        transition-all duration-300
+                        ${
+                          isActive
+                            ? "bg-neutral-900 text-lime-400"
+                            : "text-neutral-300 hover:bg-neutral-900 hover:text-lime-400"
+                        }
+                      `}
+                    >
+                      {!isActive && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-lime-400/5 via-lime-400/10 to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
+                      )}
+
+                      <Icon
+                        size={18}
+                        className={`
+                          relative z-10 transition-all duration-300
+                          ${
+                            isActive
+                              ? "text-lime-400"
+                              : "text-neutral-500 group-hover:text-lime-400"
+                          }
+                        `}
+                      />
+
+                      <span className="relative z-10">{item.label}</span>
+
+                      {isActive && (
+                        <div className="absolute right-0 top-2 h-8 w-1 rounded-l-full bg-lime-400" />
+                      )}
+                    </Link>
+
+                    {/* Sub tabs */}
+                    {hasChildren && isActive && (
+                      <div className="ml-5 mt-1 space-y-1 border-l border-neutral-800 pl-3">
+                        {item.children!.map((child) => {
+                          const ChildIcon = child.icon;
+
+                          const isChildActive = pathname === child.href;
+
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className={`
+                                group flex items-center gap-2.5 rounded-lg
+                                px-3 py-2 text-xs font-medium
+                                transition-all duration-200
+                                ${
+                                  isChildActive
+                                    ? "bg-neutral-900 text-lime-400"
+                                    : "text-neutral-500 hover:bg-neutral-900/70 hover:text-neutral-200"
+                                }
+                              `}
+                            >
+                              <ChildIcon
+                                size={15}
+                                className={`
+                                  transition-colors
+                                  ${
+                                    isChildActive
+                                      ? "text-lime-400"
+                                      : "text-neutral-600 group-hover:text-lime-400"
+                                  }
+                                `}
+                              />
+
+                              <span>{child.label}</span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </nav>
+    </aside>
+  );
+}
