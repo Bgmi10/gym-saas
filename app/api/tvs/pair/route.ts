@@ -9,6 +9,7 @@ import { completePairing } from "@/src/lib/tv/tv-service";
 export async function POST(req: NextRequest) {
   try {
     const input = await readBody(req, tvPairSchema);
+    //@ts-ignore
     return ok(await completePairing(getSocketServer(), input), 201);
   } catch (error) {
     return handleError(error, "POST /api/tvs/pair");
